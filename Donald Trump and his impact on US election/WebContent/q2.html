@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+
+
+
+    <title>Query 2</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/org.apache.spark/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/org.apache.spark/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="/org.apache.spark/dist/css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/org.apache.spark/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="/org.apache.spark/bower_components/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/org.apache.spark/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="Home.html">Twitter Analysis on US Elections</a>
+                
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+				<li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="Home.html">
+                        Home
+                  </a>
+				  
+				 </li>  
+				
+		<ul>
+                  </nav>	
+                   <center><h2>Query 2: Popular Users with High Follower Count</h2></center>		
+						<svg id="chart" style="width:900; height:400; padding-left: 50px;"></svg>
+</body>
+
+<script type="text/javascript">
+
+	d3.csv("q2.csv", function(error, data){
+		console.log(data)
+		// create an empty object that nv is expecting
+    var exampleData = [
+    	{
+    		key: "totals",
+    		values: []
+    	}
+    ];
+
+        // populate the empty object with your data
+    data.forEach(function (d){
+    	d.Count = +d.Count
+    	exampleData[0].values.push(d)
+    })       
+
+ 	nv.addGraph(function() {
+		
+   		var chart = nv.models.discreteBarChart()
+       		.x(function (d) { console.log(d); return d.Name })
+       		.y(function (d) { return d.Count })
+       		.staggerLabels(true)
+       		.tooltips(false)
+       		.showValues(true)
+ 
+ 	  	d3.select('#chart')
+    			.datum(exampleData)
+    			.attr("id", function (d) { console.log(d); })
+    		.transition().duration(500)
+       			.call(chart);
+ 
+   		nv.utils.windowResize(chart.update);
+   		return chart;
+ 	});
+
+ });
+
+</script>
+</html>
